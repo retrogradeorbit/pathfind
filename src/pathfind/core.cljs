@@ -22,3 +22,14 @@
 (defn chebyshev [x y] (max x y))
 
 (defn euclid [x y] (.sqrt js/Math (+ (* x x) (* y y))))
+
+(defn A* [start goal]
+  (let [closed-set #{}
+        open-set #{start}
+        came-from {}
+        g-score {start 0}
+        f-score {start (manhattan start goal)}
+        ]
+    )
+
+)
