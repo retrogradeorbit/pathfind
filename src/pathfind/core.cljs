@@ -24,12 +24,34 @@
 (defn euclid [x y] (.sqrt js/Math (+ (* x x) (* y y))))
 
 (defn A* [start goal]
-  (let [closed-set #{}
+  (loop [closed-set #{}
         open-set #{start}
         came-from {}
         g-score {start 0}
-        f-score {start (manhattan start goal)}
+        f-score {start 30}
         ]
+    (println "f-score" f-score)
+    (let [current (first (first (sort-by second f-score)))]
+      (println "current:" current)
+      (if (= current goal)
+        nil
+
+        (let [new-open-set (disj open-set current)
+              new-closed-set (conj closed-set current)]
+          (println new-closed-set new-open-set)
+          (->> [neigbour (neighbours current)]
+               (filter #(not (new-closed-set %)))
+
+               ;; distance from start to a neighbour
+
+
+
+               )
+          ))
+      )
+
     )
 
 )
+
+(A* [0 0] [20 20])
