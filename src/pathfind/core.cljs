@@ -23,6 +23,16 @@
 
 (defn euclid [x y] (.sqrt js/Math (+ (* x x) (* y y))))
 
+(defn neigbours [x y]
+  ;; return a sequence of walkable neighbours to a given co-ordinate
+  )
+
+
+(defn distance-between [[x1 y1] [x2 y2]]
+  (manhattan
+   (Math/abs (- x1 x2))
+   (Math/abs (- y1 y2))))
+
 (defn A* [start goal]
   (loop [closed-set #{}
         open-set #{start}
