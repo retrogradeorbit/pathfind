@@ -53,6 +53,9 @@
                (filter #(not (new-closed-set %)))
 
                ;; distance from start to a neighbour
+               (+ (get g-score current 9999)
+                  (distance-between current neig))
+
 
 
 
