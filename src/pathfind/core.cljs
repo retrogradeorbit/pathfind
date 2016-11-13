@@ -28,18 +28,46 @@
   )
 
 
+
 (defn distance-between [[x1 y1] [x2 y2]]
   (manhattan
    (Math/abs (- x1 x2))
    (Math/abs (- y1 y2))))
 
+
+(defrecord state [closed-set open-set came-from g-score f-score])
+
+(defn A*-step [{:keys [closed-set open-set came-from g-score f-score] :as state} current neigh]
+  (let [tentative-score (+ (get g-score current 9999)
+                           (distance-between current neigh))
+        g-score-neigh (g-score neigh)
+
+        ;; discover new node
+        open-set (if (not (open-set neigh))
+                      (conj open-set neigh)
+                      open-set)]
+
+    ;; is it a better path?
+    (if (< tentative-score g-score-neigh)
+      (->state
+       open-set
+       closed-set
+       (assoc came-from neigh current)
+       (assoc g-score neigh tentative-score)
+       (assoc f-score neigh (+ tentative-score
+                               (distance-between neigh goal))))
+      (assoc state :open-set open-set))))
+
+
+
+
 (defn A* [start goal]
   (loop [closed-set #{}
-        open-set #{start}
-        came-from {}
-        g-score {start 0}
-        f-score {start 30}
-        ]
+         open-set #{start}
+         came-from {}
+         g-score {start 0}
+         f-score {start 30}
+         ]
     (println "f-score" f-score)
     (let [current (first (first (sort-by second f-score)))]
       (println "current:" current)
@@ -47,24 +75,26 @@
         nil
 
         (let [new-open-set (disj open-set current)
-              new-closed-set (conj closed-set current)]
-          (println new-closed-set new-open-set)
-          (->> [neigbour (neighbours current)]
-               (filter #(not (new-closed-set %)))
+              new-closed-set (conj closed-set current)
+              neighbours (->> [neigbour (neighbours current)]
 
-               ;; distance from start to a neighbour
-               (+ (get g-score current 9999)
-                  (distance-between current neig))
+                              ;; remove neighbours already evaluated
+                              (filter #(not (new-closed-set %))))]
+          (loop [[neigh & t] neighbours
+                 open-set new-open-set
+                 close-set new-closed-set
+                 came-from came-from
+                 g-score g-score
+                 f-score f-score]
+            (A*-step neight open-set close-set game-from g-score f-score)
 
+            (recur t))
 
-
-
-               )
           ))
       )
 
     )
 
-)
+  )
 
 (A* [0 0] [20 20])
