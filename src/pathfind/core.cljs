@@ -56,7 +56,10 @@
        (assoc g-score neigh tentative-score)
        (assoc f-score neigh (+ tentative-score
                                (distance-between neigh goal))))
-      (assoc state :open-set open-set))))
+      (assoc state
+             :open-set open-set
+             :closed-set closed-set
+             ))))
 
 (defn reduce-state-over-neighbors
   [state current goal [neighbour & neighbours]]
@@ -73,26 +76,26 @@
         :when (not (and (zero? dx) (zero? dy)))]
     [(+ x dx) (+ y dy)]))
 
-(println (-> (->state #{} #{[0 0]} {} {[0 0] 0} {[0 0] 30})
-             (reduce-state-over-neighbors [0 0] [3 5]
-                                          (neighbors-for [0 0]))
-             :f-score
-             (->> (sort-by second)
-                  first
-                  first)
-             ))
+(defn state-step [{:keys [open-set closed-set] :as state} current goal]
+  (-> state
+      (assoc :open-set (disj open-set current))
+      (assoc :closed-set (conj closed-set current))
+      (reduce-state-over-neighbors current goal (neighbors-for current)))
+  )
 
-(println (-> (->state #{} #{[0 0]} {} {[0 0] 0} {[0 0] 30})
-             (reduce-state-over-neighbors [0 0] [3 5]
-                                          (neighbors-for [0 0]))
-
-             (reduce-state-over-neighbors [0 1] [3 5]
-                                          (neighbors-for [0 1]))
-             :f-score
-             (->> (sort-by second)
-                  first
-                  first)
-             ))
+(println  (let [{:keys [f-score closed-set]}
+                (-> (->state #{} #{[0 0]} {} {[0 0] 0} {[0 0] 30})
+                    (state-step [0 0] [3 5])
+                    (state-step [0 1] [3 5])
+                    ;(state-step [0 2] [3 5])
+                    )]
+;            [f-score closed-set]
+            (->> f-score
+                 (filter (fn [[k v]] (not (closed-set k))))
+                 (sort-by second)
+                 first
+                 first)
+            ))
 
 
 
