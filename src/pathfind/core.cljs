@@ -68,11 +68,33 @@
       (reduce-state-over-neighbors current goal neighbours))
     state))
 
+(defn neighbors-for [[x y]]
+  (for [dx [-1 0 1] dy [-1 0 1]
+        :when (not (and (zero? dx) (zero? dy)))]
+    [(+ x dx) (+ y dy)]))
+
 (println (-> (->state #{} #{[0 0]} {} {[0 0] 0} {[0 0] 30})
-             (reduce-state-over-neighbors [0 0] [3 3]
-                                          [
-                                           [-1 0] [-1 -1] [-1 1]])
+             (reduce-state-over-neighbors [0 0] [3 5]
+                                          (neighbors-for [0 0]))
+             :f-score
+             (->> (sort-by second)
+                  first
+                  first)
              ))
+
+(println (-> (->state #{} #{[0 0]} {} {[0 0] 0} {[0 0] 30})
+             (reduce-state-over-neighbors [0 0] [3 5]
+                                          (neighbors-for [0 0]))
+
+             (reduce-state-over-neighbors [0 1] [3 5]
+                                          (neighbors-for [0 1]))
+             :f-score
+             (->> (sort-by second)
+                  first
+                  first)
+             ))
+
+
 
 
 #_(defn A* [start goal]
