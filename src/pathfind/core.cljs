@@ -37,10 +37,10 @@
 
 (defrecord state [closed-set open-set came-from g-score f-score])
 
-(defn A*-step [{:keys [closed-set open-set came-from g-score f-score] :as state} current neigh]
+(defn A*-step [{:keys [closed-set open-set came-from g-score f-score] :as state} current goal neigh]
   (let [tentative-score (+ (get g-score current 9999)
                            (distance-between current neigh))
-        g-score-neigh (g-score neigh)
+        g-score-neigh (get g-score neigh 9999)
 
         ;; discover new node
         open-set (if (not (open-set neigh))
@@ -58,10 +58,24 @@
                                (distance-between neigh goal))))
       (assoc state :open-set open-set))))
 
+(defn reduce-state-over-neighbors
+  [state current goal [neighbour & neighbours]]
+  (if (or neighbour neighbours)
+    (if neighbour
+      (-> state
+          (A*-step current goal neighbour)
+          (reduce-state-over-neighbors current goal neighbours))
+      (reduce-state-over-neighbors current goal neighbours))
+    state))
+
+(println (-> (->state #{} #{[0 0]} {} {[0 0] 0} {[0 0] 30})
+             (reduce-state-over-neighbors [0 0] [3 3]
+                                          [
+                                           [-1 0] [-1 -1] [-1 1]])
+             ))
 
 
-
-(defn A* [start goal]
+#_(defn A* [start goal]
   (loop [closed-set #{}
          open-set #{start}
          came-from {}
@@ -97,4 +111,4 @@
 
   )
 
-(A* [0 0] [20 20])
+#_(A*-step [0 0] [20 20])
