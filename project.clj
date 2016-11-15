@@ -15,11 +15,19 @@
             [lein-cljsbuild "1.1.4" :exclusions [[org.clojure/clojure]]]]
 
   :source-paths ["src"]
+  :test-paths ["test"]
 
   :clean-targets ^{:protect false} ["resources/public/js/compiled" "target"]
 
   :cljsbuild {:builds
-              [{:id "dev"
+              [{:id "test"
+                :source-paths ["src" "test"]
+                :compiler {:output-to "resources/test/compiled.js"
+                           :optimizations :whitespace
+                           :pretty-print true}}
+
+
+               {:id "dev"
                 :source-paths ["src"]
 
                 ;; the presence of a :figwheel configuration here
@@ -48,7 +56,13 @@
                 :compiler {:output-to "resources/public/js/compiled/pathfind.js"
                            :main pathfind.core
                            :optimizations :advanced
-                           :pretty-print false}}]}
+                           :pretty-print false}}]
+
+              :test-commands {"test" ["phantomjs"
+                           "resources/test/test.js"
+                           "resources/test/test.html"]}
+
+              }
 
   :figwheel {;; :http-server-root "public" ;; default and assumes "resources"
              ;; :server-port 3449 ;; default
