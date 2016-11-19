@@ -23,7 +23,8 @@
 
 (defrecord state [closed-set open-set came-from g-score f-score])
 
-(defn A*-step [{:keys [closed-set open-set came-from g-score f-score] :as state} current goal neigh]
+(defn A*-step [{:keys [closed-set open-set came-from g-score f-score] :as state}
+               current goal neigh]
   (let [tentative-score (+ (get g-score current 9999)
                            (distance-between current neigh))
         g-score-neigh (get g-score neigh 9999)
