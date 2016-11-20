@@ -23,6 +23,11 @@
   (is (= (core/euclid -3 4) 5))
   (is (= (core/euclid -3 -4) 5)))
 
+(deftest distance-between-test
+  (is (= (core/distance-between core/manhattan [0 0] [-3 4]) 7))
+  (is (= (core/distance-between core/chebyshev [0 0] [-3 4]) 4))
+  (is (= (core/distance-between core/euclid    [0 0] [-3 4]) 5)))
+
 (deftest A*-step
   (let [start [0 0]
         result (core/A*-step

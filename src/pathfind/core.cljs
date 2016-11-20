@@ -9,11 +9,10 @@
 
 (defn euclid [dx dy] (.sqrt js/Math (+ (* dx dx) (* dy dy))))
 
-(defn distance-between [[x1 y1] [x2 y2]]
-  (manhattan
+(defn distance-between [func [x1 y1] [x2 y2]]
+  (func
    (Math/abs (- x1 x2))
    (Math/abs (- y1 y2))))
-
 
 (defrecord state [closed-set open-set came-from g-score f-score])
 
