@@ -2,6 +2,12 @@
   (:require [cljs.test :refer-macros [deftest is]]
             [pathfind.core :as core]))
 
+(deftest manhattan-test
+  (is (= (core/manhattan 0 0) 0))
+  (is (= (core/manhattan 1 4) 5))
+  (is (= (core/manhattan 1 -4) 5))
+  (is (= (core/manhattan -1 4) 5))
+  (is (= (core/manhattan -1 -4) 5)))
 
 (deftest A*-step
   (let [start [0 0]
