@@ -9,6 +9,12 @@
   (is (= (core/manhattan -1 4) 5))
   (is (= (core/manhattan -1 -4) 5)))
 
+(deftest chebyshev-test
+  (is (= (core/chebyshev 0 0) 0))
+  (is (= (core/chebyshev 1 4) 4))
+  (is (= (core/chebyshev 1 -4) 4))
+  (is (= (core/chebyshev -1 4) 4))
+  (is (= (core/chebyshev -1 -4) 4)))
 (deftest A*-step
   (let [start [0 0]
         result (core/A*-step
