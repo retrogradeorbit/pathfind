@@ -9,12 +9,6 @@
 
 (defn euclid [dx dy] (.sqrt js/Math (+ (* dx dx) (* dy dy))))
 
-(defn neigbours [dx dy]
-  ;; return a sequence of walkable neighbours to a given co-ordinate
-  )
-
-
-
 (defn distance-between [[x1 y1] [x2 y2]]
   (manhattan
    (Math/abs (- x1 x2))
