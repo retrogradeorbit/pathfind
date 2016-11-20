@@ -15,6 +15,14 @@
   (is (= (core/chebyshev 1 -4) 4))
   (is (= (core/chebyshev -1 4) 4))
   (is (= (core/chebyshev -1 -4) 4)))
+
+(deftest euclid-test
+  (is (= (core/euclid 0 0) 0))
+  (is (= (core/euclid 3 4) 5))
+  (is (= (core/euclid 3 -4) 5))
+  (is (= (core/euclid -3 4) 5))
+  (is (= (core/euclid -3 -4) 5)))
+
 (deftest A*-step
   (let [start [0 0]
         result (core/A*-step
