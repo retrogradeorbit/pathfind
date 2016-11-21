@@ -36,7 +36,12 @@
         [1 1])
        (core/->state #{} #{[1 1]} {[1 1] [0 0]} {} {}))))
 
-
+(deftest state-add-open-test
+  (is (=
+       (core/state-add-open
+        (core/->state #{} #{} {} {} {})
+        [0 0])
+       (core/->state #{} #{[0 0]} {} {} {}))))
 
 (comment
 

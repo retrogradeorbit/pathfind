@@ -22,6 +22,9 @@
          :open-set (conj open-set neighbour)
          :came-from (assoc came-from neighbour current)))
 
+(defn state-add-open [state neighbour]
+  (update state :open-set conj neighbour))
+
 (defn A*-step [{:keys [closed-set open-set came-from g-score f-score] :as state}
                current goal neigh]
   (let [tentative-score (+ (get g-score current 9999)
