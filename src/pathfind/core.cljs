@@ -22,8 +22,38 @@
          :open-set (conj open-set neighbour)
          :came-from (assoc came-from neighbour current)))
 
-(defn state-add-open [state neighbour]
-  (update state :open-set conj neighbour))
+(defn state-add-open [state cell]
+  (update state :open-set conj cell))
+
+(defn state-open-to-closed [state cell]
+  (-> state
+      (update :open-set disj cell)
+      (update :closed-set conj cell)))
+
+(defn reduce-state-over-neighbours [state current neighbours]
+  (reduce
+   (fn [acc item] (state-add-neighbour acc current item))
+   state
+   neighbours))
+
+(defn calculate-open-fscore [{:keys [f-score g-score open-set] :as state}
+                             parent destination]
+  (let [to-calc (reduce disj open-set (keys f-score))
+        new-g-score (into g-score
+                          (for [cell to-calc]
+                            [cell (+ (distance-between manhattan cell parent)
+                                     (get g-score parent 0))]))
+        new-f-score (into f-score
+                          (for [cell to-calc]
+                            [cell (+ (new-g-score cell)
+                                     (distance-between manhattan cell destination))]))]
+    (assoc state :f-score new-f-score :g-score new-g-score)))
+
+
+
+
+
+
 
 (defn A*-step [{:keys [closed-set open-set came-from g-score f-score] :as state}
                current goal neigh]
