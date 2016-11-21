@@ -28,41 +28,54 @@
   (is (= (core/distance-between core/chebyshev [0 0] [-3 4]) 4))
   (is (= (core/distance-between core/euclid    [0 0] [-3 4]) 5)))
 
-(deftest A*-step
-  (let [start [0 0]
-        result (core/A*-step
-                (core/->state #{} #{} {} {} {})
-                [0 0] [10 10] [0 1])
-        {:keys [closed-set open-set came-from g-score f-score]} result]
-    (println result)
+(deftest state-add-neighbour-test
+  (is (=
+       (core/state-add-neighbour
+        (core/->state #{} #{} {} {} {})
+        [0 0]
+        [1 1])
+       (core/->state #{} #{[1 1]} {[1 1] [0 0]} {} {}))))
 
-    ))
 
-(deftest reduce-state
-  (let [start [0 0]
-        result (core/reduce-state-over-neighbors
-                (core/->state #{} #{} {} {} {})
-                [0 0] [10 10] (core/neighbors-for [0 0]))
-        {:keys [closed-set open-set came-from g-score f-score]} result]
-    ; (println result)
-    (is (= came-from
-           {[-1 -1] [0 0]
-            [-1 0]  [0 0]
-            [-1 1]  [0 0]
-            [0 -1]  [0 0]
-            [0 1]   [0 0]
-            [1 -1]  [0 0]
-            [1 0]   [0 0]
-            [1 1]   [0 0]}))
-    (is (= open-set
-           #{[-1 -1]
-             [-1 0]
-             [-1 1]
-             [0 -1]
-             [0 1]
-             [1 -1]
-             [1 0]
-             [1 1]}))
-    (is (= closed-set
-           #{[0 0]}))
-    ))
+
+(comment
+
+
+  (deftest A*-step
+    (let [start [0 0]
+          result (core/A*-step
+                  (core/->state #{} #{} {} {} {})
+                  [0 0] [10 10] [0 1])
+          {:keys [closed-set open-set came-from g-score f-score]} result]
+      (println result)
+
+      ))
+
+  (deftest reduce-state
+    (let [start [0 0]
+          result (core/reduce-state-over-neighbors
+                  (core/->state #{} #{} {} {} {})
+                  [0 0] [10 10] (core/neighbors-for [0 0]))
+          {:keys [closed-set open-set came-from g-score f-score]} result]
+                                        ; (println result)
+      (is (= came-from
+             {[-1 -1] [0 0]
+              [-1 0]  [0 0]
+              [-1 1]  [0 0]
+              [0 -1]  [0 0]
+              [0 1]   [0 0]
+              [1 -1]  [0 0]
+              [1 0]   [0 0]
+              [1 1]   [0 0]}))
+      (is (= open-set
+             #{[-1 -1]
+               [-1 0]
+               [-1 1]
+               [0 -1]
+               [0 1]
+               [1 -1]
+               [1 0]
+               [1 1]}))
+      (is (= closed-set
+             #{[0 0]}))
+      )))

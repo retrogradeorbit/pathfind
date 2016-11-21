@@ -16,6 +16,12 @@
 
 (defrecord state [closed-set open-set came-from g-score f-score])
 
+(defn state-add-neighbour [{:keys [closed-set open-set came-from]
+                            :as  state} current neighbour]
+  (assoc state
+         :open-set (conj open-set neighbour)
+         :came-from (assoc came-from neighbour current)))
+
 (defn A*-step [{:keys [closed-set open-set came-from g-score f-score] :as state}
                current goal neigh]
   (let [tentative-score (+ (get g-score current 9999)
