@@ -108,4 +108,4 @@
         {}, {})
        (core/calculate-open-fscore [0 1] [10 10])
        (core/lowest-f-score-open-cell))
-      [-1 -1])))
+      [0 1])))
