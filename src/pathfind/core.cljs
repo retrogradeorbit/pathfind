@@ -53,3 +53,10 @@
   (for [dx [-1 0 1] dy [-1 0 1]
         :when (not (and (zero? dx) (zero? dy)))]
     [(+ x dx) (+ y dy)]))
+
+(defn lowest-f-score-open-cell [{:keys [f-score open-set]}]
+  (->> f-score
+       (sort-by second)
+       (filter (fn [[k v]] (open-set k)))
+       first
+       first))
