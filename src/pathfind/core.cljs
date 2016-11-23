@@ -60,3 +60,9 @@
        (filter (fn [[k v]] (open-set k)))
        first
        first))
+
+(defn A* [passable? start end]
+  (-> (->state #{} #{start} {} {} {})
+      (calculate-open-fscore start destination)
+      (println)
+      ))

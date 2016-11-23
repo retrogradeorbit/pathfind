@@ -109,3 +109,7 @@
       {}, {})
      (core/calculate-open-fscore [0 1] [10 10])
      (core/lowest-f-score-open-cell)))))
+
+(deftest A*-test
+  (println (core/A* (constantly true) [0 0] [10 10]))
+  )
