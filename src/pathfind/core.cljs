@@ -62,7 +62,10 @@
        first))
 
 (defn A* [passable? start end]
-  (-> (->state #{} #{start} {} {} {})
-      (calculate-open-fscore start destination)
-      (println)
+  (-> (->state #{} #{start} {} {start 0} {start (distance-between manhattan start end)})
+      (calculate-open-fscore start end)
+      lowest-f-score-open-cell
+
       ))
+
+(println (A* (constantly true) [0 0] [10 10]))
