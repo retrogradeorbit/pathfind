@@ -23,6 +23,7 @@
               [{:id "test"
                 :source-paths ["src" "test"]
                 :compiler {:output-to "resources/test/compiled.js"
+                           :output-dir "resources/test/out"
                            :optimizations :whitespace
                            :pretty-print true}}
 
