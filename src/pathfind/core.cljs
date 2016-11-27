@@ -71,10 +71,13 @@
 (defn A* [passable? start end]
   (let [state (-> (->state #{} #{start} {} {start 0} {start (distance-between manhattan start end)}))
         [state next-cell] (A*-step state start end start)]
-    (println next-cell)
+    (println state)
+    (println "=================")
     (let [[state next-cell] (A*-step state start end next-cell)]
-      (println next-cell)
+      (println state)
+      (println "================")
       (let [[state next-cell] (A*-step state start end next-cell)]
-        (println next-cell)))))
+        (println state)
+        (println "================")))))
 
 (println (A* (constantly true) [0 0] [10 10]))
