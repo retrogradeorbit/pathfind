@@ -63,21 +63,31 @@
 
 (defn A*-step [state start end current]
   (let [state (-> state
-                  (reduce-state-over-neighbours current (neighbors-for start))
-                  (calculate-open-fscore current end))
+                  (reduce-state-over-neighbours current (neighbors-for current))
+                  (calculate-open-fscore current end)
+                  (state-open-to-closed current))
         next-cell (lowest-f-score-open-cell state)]
     [state next-cell]))
 
 (defn A* [passable? start end]
   (let [state (-> (->state #{} #{start} {} {start 0} {start (distance-between manhattan start end)}))
         [state next-cell] (A*-step state start end start)]
-    (println state)
+    (println state next-cell)
     (println "=================")
     (let [[state next-cell] (A*-step state start end next-cell)]
-      (println state)
+      (println state next-cell)
       (println "================")
       (let [[state next-cell] (A*-step state start end next-cell)]
-        (println state)
-        (println "================")))))
+        (println state next-cell)
+        (println "================")
+        (let [[state next-cell] (A*-step state start end next-cell)]
+          (println state next-cell)
+          (println "================")
+          (let [[state next-cell] (A*-step state start end next-cell)]
+            (println state next-cell)
+            (println "================")
+
+            ))
+        ))))
 
 (println (A* (constantly true) [0 0] [10 10]))
