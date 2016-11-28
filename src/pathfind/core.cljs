@@ -62,8 +62,10 @@
        first))
 
 (defn A*-step [state start end current]
-  (let [state (-> state
-                  (reduce-state-over-neighbours current (neighbors-for current))
+  (let [
+        neighbors (apply disj (into #{} (neighbors-for current)) (:closed-set state))
+        state (-> state
+                  (reduce-state-over-neighbours current neighbors)
                   (calculate-open-fscore current end)
                   (state-open-to-closed current))
         next-cell (lowest-f-score-open-cell state)]
@@ -75,18 +77,36 @@
     (println state next-cell)
     (println "=================")
     (let [[state next-cell] (A*-step state start end next-cell)]
-      (println state next-cell)
+      (println ;state
+               next-cell)
       (println "================")
       (let [[state next-cell] (A*-step state start end next-cell)]
-        (println state next-cell)
+        (println ;state
+                 next-cell)
         (println "================")
         (let [[state next-cell] (A*-step state start end next-cell)]
-          (println state next-cell)
+          (println ;state
+                   next-cell)
           (println "================")
           (let [[state next-cell] (A*-step state start end next-cell)]
-            (println state next-cell)
+            (println ;state
+                     next-cell)
             (println "================")
+            (let [[state next-cell] (A*-step state start end next-cell)]
+              (println ;state
+                       next-cell)
+              (println "================")
+              (let [[state next-cell] (A*-step state start end next-cell)]
+                (println ;state
+                         next-cell)
+                (println "================")
+                (let [[state next-cell] (A*-step state start end next-cell)]
+                  (println ;state
+                           next-cell)
+                  (println "================")
 
+                  ))
+              )
             ))
         ))))
 
