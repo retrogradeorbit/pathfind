@@ -112,7 +112,12 @@
 
 (deftest A*-step-test
   (let [start [0 0]
-        end [10 10]]
-    (-> (core/->state #{} #{start} {} {start 0} {start 10})
-        (core/A*-step start end start)
-        (println))))
+        end [10 10]
+        [state next-cell]
+        (-> (core/->state #{} #{start} {} {start 0} {start 10})
+            (core/A*-step start end start))
+        open-set (:open-set state)]
+    (is
+     (= open-set #{[-1 -1] [0 -1] [1 -1] [-1 0] [1 0] [-1 1] [0 1] [1 1]}))
+
+    ))
