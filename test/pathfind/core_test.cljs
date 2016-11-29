@@ -110,6 +110,9 @@
      (core/calculate-open-fscore [0 1] [10 10])
      (core/lowest-f-score-open-cell)))))
 
-(deftest A*-test
-  (println (core/A* (constantly true) [0 0] [10 10]))
-  )
+(deftest A*-step-test
+  (let [start [0 0]
+        end [10 10]]
+    (-> (core/->state #{} #{start} {} {start 0} {start 10})
+        (core/A*-step start end start)
+        (println))))

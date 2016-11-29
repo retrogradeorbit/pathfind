@@ -42,7 +42,7 @@
         new-g-score (into g-score
                           (for [cell to-calc]
                             [cell (+ (distance-between manhattan cell parent)
-                                     (get g-score parent 0))]))
+                                     (get g-score parent))]))
         new-f-score (into f-score
                           (for [cell to-calc]
                             [cell (+ (new-g-score cell)
@@ -110,4 +110,4 @@
             ))
         ))))
 
-(println (A* (constantly true) [0 0] [10 10]))
+;(println (A* (constantly true) [0 0] [10 10]))
