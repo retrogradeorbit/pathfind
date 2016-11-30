@@ -113,11 +113,22 @@
 (deftest A*-step-test
   (let [start [0 0]
         end [10 10]
-        [state next-cell]
+        [{:keys [open-set came-from] :as state} next-cell]
         (-> (core/->state #{} #{start} {} {start 0} {start 10})
-            (core/A*-step start end start))
-        open-set (:open-set state)]
-    (is
-     (= open-set #{[-1 -1] [0 -1] [1 -1] [-1 0] [1 0] [-1 1] [0 1] [1 1]}))
+            (core/A*-step start end start))]
+    (is (= open-set #{[-1 -1] [0 -1] [1 -1] [-1 0] [1 0] [-1 1] [0 1] [1 1]}))
+    (is (= came-from
+           {
+            [-1 -1] [0 0]
+            [0 -1] [0 0]
+            [1 -1] [0 0]
+            [-1 0] [0 0]
+            [1 0] [0 0]
+            [-1 1] [0 0]
+            [0 1] [0 0]
+            [1 1] [0 0]
+            }))
+
+
 
     ))
