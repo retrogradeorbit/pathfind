@@ -36,12 +36,22 @@
    state
    neighbours))
 
+(defn g-dist [[x1 y1] [x2 y2]]
+  (let [dx (Math/abs (- x1 x2))
+        dy (Math/abs (- y1 y2))]
+    (cond
+      (and (= 1 dx) (= 1 dy))
+      14
+
+      (or (= 1 dx) (= 1 dy))
+      10)))
+
 (defn calculate-open-fscore [{:keys [f-score g-score open-set] :as state}
                              parent destination]
   (let [to-calc (reduce disj open-set (keys f-score))
         new-g-score (into g-score
                           (for [cell to-calc]
-                            [cell (+ (distance-between manhattan cell parent)
+                            [cell (+ (g-dist cell parent)
                                      (get g-score parent))]))
         new-f-score (into f-score
                           (for [cell to-calc]
