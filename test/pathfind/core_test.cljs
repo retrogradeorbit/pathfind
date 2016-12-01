@@ -113,7 +113,7 @@
 (deftest A*-step-test
   (let [start [0 0]
         end [10 10]
-        [{:keys [open-set came-from] :as state} next-cell]
+        [{:keys [open-set came-from g-score] :as state} next-cell]
         (-> (core/->state #{} #{start} {} {start 0} {start 10})
             (core/A*-step start end start))]
     (is (= open-set #{[-1 -1] [0 -1] [1 -1] [-1 0] [1 0] [-1 1] [0 1] [1 1]}))
@@ -128,7 +128,16 @@
             [0 1] [0 0]
             [1 1] [0 0]
             }))
-
-
+    (is (= g-score
+           {[0 -1] 10
+            [-1 0] 10
+            [0 1] 10
+            [1 0] 10
+            [-1 -1] 14
+            [-1 1] 14
+            [1 -1] 14
+            [1 1] 14
+            [0 0] 0
+            }))
 
     ))
