@@ -115,7 +115,7 @@
         end [10 10]
         [{:keys [open-set came-from g-score] :as state} next-cell]
         (-> (core/->state #{} #{start} {} {start 0} {start 10})
-            (core/A*-step start end start))]
+            (core/A*-step (constantly true) start end start))]
     (is (= open-set #{[-1 -1] [0 -1] [1 -1] [-1 0] [1 0] [-1 1] [0 1] [1 1]}))
     (is (= came-from
            {
@@ -142,4 +142,13 @@
 
 (deftest A*-test
   (is (= (core/A* (constantly true) [0 0] [10 5])
-         (list [0 0] [1 1] [2 2] [3 3] [4 4] [5 5] [6 5] [7 5] [8 5] [9 5] [10 5]))))
+         '([0 0] [1 1] [2 2] [3 3] [4 4] [5 5] [6 5] [7 5] [8 5] [9 5] [10 5]))))
+
+(deftest A*-obstacle-test
+  (let [passable? (fn [pos]
+                    (-> pos #{[3 3] [3 4] [4 4] [4 3]} boolean not))]
+    (is (= (core/A* passable? [0 0] [10 5])
+           '([0 0] [1 1] [2 2]
+             [3 2] [4 2] [5 3]
+             [6 4] [7 5] [8 5]
+             [9 5] [10 5])))))

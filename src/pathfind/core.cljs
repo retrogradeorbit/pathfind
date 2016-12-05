@@ -80,21 +80,24 @@
       (recur (came-from pos) (conj path pos))
       (conj path start))))
 
-(defn A*-step [state start end current]
+(defn A*-step [state passable? start end current]
   (let [
         neighbors (apply disj (into #{} (neighbors-for current)) (:closed-set state))
+        passable-neighbors (filter passable? neighbors)
         state (-> state
-                  (reduce-state-over-neighbours current neighbors)
+                  (reduce-state-over-neighbours current passable-neighbors)
                   (calculate-open-fscore current end)
                   (state-open-to-closed current))
         next-cell (lowest-f-score-open-cell state)]
     [state next-cell]))
 
 (defn A* [passable? start end]
-  (let [state (-> (->state #{} #{start} {} {start 0} {start (distance-between manhattan start end)}))]
-    (loop [[state next-cell] (A*-step state start end start)]
+  (let [state (-> (->state #{} #{start}
+                           {} {start 0}
+                           {start (distance-between manhattan start end)}))]
+    (loop [[state next-cell] (A*-step state passable? start end start)]
       (if (not= next-cell end)
-        (recur (A*-step state start end next-cell))
+        (recur (A*-step state passable? start end next-cell))
 
         ;; backtrack
         (backtrack state end start)))))
