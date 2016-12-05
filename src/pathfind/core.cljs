@@ -36,15 +36,18 @@
    state
    neighbours))
 
+(def diagonal-cost 14)
+(def orthogonal-cost 10)
+
 (defn g-dist [[x1 y1] [x2 y2]]
   (let [dx (Math/abs (- x1 x2))
         dy (Math/abs (- y1 y2))]
     (cond
       (and (= 1 dx) (= 1 dy))
-      14
+      diagonal-cost
 
       (or (= 1 dx) (= 1 dy))
-      10)))
+      orthogonal-cost)))
 
 (defn calculate-open-fscore [{:keys [f-score g-score open-set] :as state}
                              parent destination]
@@ -56,7 +59,7 @@
         new-f-score (into f-score
                           (for [cell to-calc]
                             [cell (+ (new-g-score cell)
-                                     (distance-between manhattan cell destination))]))]
+                                     (* orthogonal-cost (distance-between manhattan cell destination)))]))]
     (assoc state :f-score new-f-score :g-score new-g-score)))
 
 (defn neighbors-for [[x y]]
@@ -120,4 +123,4 @@
             ))
         ))))
 
-;(println (A* (constantly true) [0 0] [10 10]))
+(println (A* (constantly true) [0 0] [10 5]))
