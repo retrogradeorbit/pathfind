@@ -74,6 +74,12 @@
        first
        first))
 
+(defn backtrack [{:keys [came-from]} end start]
+  (loop [pos end path '()]
+    (if (not= pos start)
+      (recur (came-from pos) (conj path pos))
+      (conj path start))))
+
 (defn A*-step [state start end current]
   (let [
         neighbors (apply disj (into #{} (neighbors-for current)) (:closed-set state))
@@ -85,42 +91,12 @@
     [state next-cell]))
 
 (defn A* [passable? start end]
-  (let [state (-> (->state #{} #{start} {} {start 0} {start (distance-between manhattan start end)}))
-        [state next-cell] (A*-step state start end start)]
-    (println state next-cell)
-    (println "=================")
-    (let [[state next-cell] (A*-step state start end next-cell)]
-      (println ;state
-               next-cell)
-      (println "================")
-      (let [[state next-cell] (A*-step state start end next-cell)]
-        (println ;state
-                 next-cell)
-        (println "================")
-        (let [[state next-cell] (A*-step state start end next-cell)]
-          (println ;state
-                   next-cell)
-          (println "================")
-          (let [[state next-cell] (A*-step state start end next-cell)]
-            (println ;state
-                     next-cell)
-            (println "================")
-            (let [[state next-cell] (A*-step state start end next-cell)]
-              (println ;state
-                       next-cell)
-              (println "================")
-              (let [[state next-cell] (A*-step state start end next-cell)]
-                (println ;state
-                         next-cell)
-                (println "================")
-                (let [[state next-cell] (A*-step state start end next-cell)]
-                  (println ;state
-                           next-cell)
-                  (println "================")
+  (let [state (-> (->state #{} #{start} {} {start 0} {start (distance-between manhattan start end)}))]
+    (loop [[state next-cell] (A*-step state start end start)]
+      (if (not= next-cell end)
+        (recur (A*-step state start end next-cell))
 
-                  ))
-              )
-            ))
-        ))))
+        ;; backtrack
+        (backtrack state end start)))))
 
-(println (A* (constantly true) [0 0] [10 5]))
+#_ (println (A* (constantly true) [0 0] [10 5]))
