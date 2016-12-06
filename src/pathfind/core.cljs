@@ -80,10 +80,21 @@
       (recur (came-from pos) (conj path pos))
       (conj path start))))
 
-(defn A*-step [state passable? start end current]
+(defn A*-step [state passable? start end current corner-cut?]
   (let [
         neighbors (apply disj (into #{} (neighbors-for current)) (:closed-set state))
-        passable-neighbors (filter passable? neighbors)
+        [xp yp] current
+        passable-neighbors
+        (->> neighbors
+             (filter passable?)
+             (filter (fn [[x y]]
+                       (cond
+                         corner-cut? true
+                         (and (= x (dec xp)) (not (passable? [(dec xp) yp]))) false
+                         (and (= x (inc xp)) (not (passable? [(inc xp) yp]))) false
+                         (and (= y (dec yp)) (not (passable? [xp (dec yp)]))) false
+                         (and (= y (inc yp)) (not (passable? [xp (inc yp)]))) false
+                         :default true))))
         state (-> state
                   (reduce-state-over-neighbours current passable-neighbors)
                   (calculate-open-fscore current end)
@@ -91,13 +102,15 @@
         next-cell (lowest-f-score-open-cell state)]
     [state next-cell]))
 
-(defn A* [passable? start end]
-  (let [state (-> (->state #{} #{start}
+(defn A* [passable? start end & arguments]
+  (let [args (into #{} arguments)
+        corner-cut? (:corner-cut args)
+        state (-> (->state #{} #{start}
                            {} {start 0}
                            {start (distance-between manhattan start end)}))]
-    (loop [[state next-cell] (A*-step state passable? start end start)]
+    (loop [[state next-cell] (A*-step state passable? start end start corner-cut?)]
       (if (not= next-cell end)
-        (recur (A*-step state passable? start end next-cell))
+        (recur (A*-step state passable? start end next-cell corner-cut?))
 
         ;; backtrack
         (backtrack state end start)))))
