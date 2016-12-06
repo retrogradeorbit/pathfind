@@ -147,8 +147,17 @@
 (deftest A*-obstacle-test
   (let [passable? (fn [pos]
                     (-> pos #{[3 3] [3 4] [4 4] [4 3]} boolean not))]
-    (is (= (core/A* passable? [0 0] [10 5])
+    (is (= (core/A* passable? [0 0] [10 5] :corner-cut)
            '([0 0] [1 1] [2 2]
              [3 2] [4 2] [5 3]
              [6 4] [7 5] [8 5]
+             [9 5] [10 5])))))
+
+(deftest A*-obstacle-no-diags-test
+  (let [passable? (fn [pos]
+                    (-> pos #{[3 3] [3 4] [4 4] [4 3]} boolean not))]
+    (is (= (core/A* passable? [0 0] [10 5])
+           '([0 0] [1 1] [2 2]
+             [3 2] [4 2] [5 2]
+             [6 3] [7 4] [8 5]
              [9 5] [10 5])))))
