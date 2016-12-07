@@ -1,7 +1,9 @@
-(ns pathfind.core
-  (:require ))
+(ns pathfind.core)
 
-(enable-console-print!)
+(defrecord state [closed-set open-set came-from g-score f-score])
+
+(def diagonal-cost 14)
+(def orthogonal-cost 10)
 
 (defn manhattan [dx dy] (+ (Math/abs dx) (Math/abs dy)))
 
@@ -13,8 +15,6 @@
   (func
    (Math/abs (- x1 x2))
    (Math/abs (- y1 y2))))
-
-(defrecord state [closed-set open-set came-from g-score f-score])
 
 (defn state-add-neighbour [{:keys [closed-set open-set came-from]
                             :as  state} current neighbour]
@@ -35,9 +35,6 @@
    (fn [acc item] (state-add-neighbour acc current item))
    state
    neighbours))
-
-(def diagonal-cost 14)
-(def orthogonal-cost 10)
 
 (defn g-dist [[x1 y1] [x2 y2]]
   (let [dx (Math/abs (- x1 x2))
@@ -114,5 +111,3 @@
 
         ;; backtrack
         (backtrack state end start)))))
-
-#_ (println (A* (constantly true) [0 0] [10 5]))
