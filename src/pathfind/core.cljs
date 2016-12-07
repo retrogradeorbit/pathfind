@@ -77,7 +77,7 @@
       (recur (came-from pos) (conj path pos))
       (conj path start))))
 
-(defn A*-step [state passable? end current corner-cut?]
+(defn A*-step [state passable? current end corner-cut?]
   (let [
         neighbors (apply disj (into #{} (neighbors-for current)) (:closed-set state))
         [xp yp] current
@@ -105,9 +105,9 @@
         state (-> (->state #{} #{start}
                            {} {start 0}
                            {start (distance-between manhattan start end)}))]
-    (loop [[state next-cell] (A*-step state passable? end start corner-cut?)]
+    (loop [[state next-cell] (A*-step state passable? start end corner-cut?)]
       (if (not= next-cell end)
-        (recur (A*-step state passable? end next-cell corner-cut?))
+        (recur (A*-step state passable? next-cell end corner-cut?))
 
         ;; backtrack
         (backtrack state end start)))))

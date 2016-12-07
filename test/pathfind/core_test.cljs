@@ -115,7 +115,7 @@
         end [10 10]
         [{:keys [open-set came-from g-score] :as state} next-cell]
         (-> (core/->state #{} #{start} {} {start 0} {start 10})
-            (core/A*-step (constantly true) end start))]
+            (core/A*-step (constantly true) start end))]
     (is (= open-set #{[-1 -1] [0 -1] [1 -1] [-1 0] [1 0] [-1 1] [0 1] [1 1]}))
     (is (= came-from
            {
