@@ -18,7 +18,7 @@ to not cut corners.
 ```clojure
 (let [passable? (fn [pos]
                     (-> pos #{[3 3] [3 4] [4 4] [4 3]} boolean not))]
-    (is (= (core/A* passable? [0 0] [10 5])
+    (is (= (A* passable? [0 0] [10 5])
            '([0 0] [1 1] [2 2]
              [3 2] [4 2] [5 2]
              [6 3] [7 4] [8 5]
