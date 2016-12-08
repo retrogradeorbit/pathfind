@@ -16,17 +16,16 @@ to not cut corners.
 ## Example
 
 ```clojure
-cljs.user=> (require '[pathfind.core :as pf]
+(require '[pathfind.core :as pf]
 	'[cljs.test :refer-macros [is]])
-nil
-cljs.user=> (let [passable? (fn [pos]
+
+(let [passable? (fn [pos]
                     (-> pos #{[3 3] [3 4] [4 4] [4 3]} boolean not))]
     (is (= (pf/A* passable? [0 0] [10 5])
            '([0 0] [1 1] [2 2]
              [3 2] [4 2] [5 2]
              [6 3] [7 4] [8 5]
              [9 5] [10 5]))))
-true
 ```
 
 ## Tests
