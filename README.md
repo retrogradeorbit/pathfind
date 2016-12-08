@@ -1,10 +1,35 @@
 # pathfind
 
-FIXME: Write a one-line description of your library/project.
+A pure clojure implementation of the A* algorithm.
 
 ## Overview
 
-FIXME: Write a paragraph about the library/project and highlight its goals.
+Supports an arbitrary 2D grid. Obstucted cells are seen by calling a
+passed-in function `passable?` with a tuple containg the x, y
+coordinate being tested. Along with this is passed a start and end
+coordinate tuple. The function returns a sequence of positions.
+
+Optionally a keyword can be added to the call `:cut-corners` to enable
+the path finder to cut directly across diagonal obstacles. Default is
+to not cut corners.
+
+## Example
+
+```clojure
+(let [passable? (fn [pos]
+                    (-> pos #{[3 3] [3 4] [4 4] [4 3]} boolean not))]
+    (is (= (core/A* passable? [0 0] [10 5])
+           '([0 0] [1 1] [2 2]
+             [3 2] [4 2] [5 2]
+             [6 3] [7 4] [8 5]
+             [9 5] [10 5]))))
+```
+
+## Tests
+
+```
+lein cljsbuild test
+```
 
 ## Setup
 
@@ -30,7 +55,7 @@ To create a production build run:
     lein do clean, cljsbuild once min
 
 And open your browser in `resources/public/index.html`. You will not
-get live reloading, nor a REPL. 
+get live reloading, nor a REPL.
 
 ## License
 
