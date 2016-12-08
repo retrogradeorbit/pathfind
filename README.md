@@ -17,10 +17,12 @@ to not cut corners.
 
 ```clojure
 (require '[pathfind.core :as pf]
-	'[cljs.test :refer-macros [is]])
+	     '[cljs.test :refer-macros [is]])
 
 (let [passable? (fn [pos]
-                    (-> pos #{[3 3] [3 4] [4 4] [4 3]} boolean not))]
+                    (-> pos
+					    #{[3 3] [3 4] [4 4] [4 3]}
+						boolean not))]
     (is (= (pf/A* passable? [0 0] [10 5])
            '([0 0] [1 1] [2 2]
              [3 2] [4 2] [5 2]
