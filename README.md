@@ -6,8 +6,10 @@ A pure clojure implementation of the A* algorithm.
 
 Supports an arbitrary 2D grid. Obstucted cells are seen by calling a
 passed-in function `passable?` with a tuple containg the x, y
-coordinate being tested. Along with this is passed a start and end
-coordinate tuple. The function returns a sequence of positions.
+coordinate being tested.
+
+A* is called passing in this function, along with start and end
+coordinate tuple. This A* function returns a sequence of positions that represent the parth from start to end.
 
 Optionally a keyword can be added to the call `:cut-corners` to enable
 the path finder to cut directly across diagonal obstacles. Default is
