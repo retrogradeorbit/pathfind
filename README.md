@@ -4,7 +4,7 @@ A pure clojure implementation of the A* algorithm.
 
 ## Overview
 
-Supports an arbitrary 2D grid. Obstucted cells are seen by
+Supports an arbitrary 2D grid. Obstructed cells are seen by
 constructing a function to pass in, `passable?`, which is called and
 passed a tuple containg the x, y coordinate being tested.
 
