@@ -1,6 +1,6 @@
 # pathfind
 
-A pure clojure implementation of the A* algorithm.
+A pure clojurescript implementation of the A* algorithm.
 
 ## Overview
 
